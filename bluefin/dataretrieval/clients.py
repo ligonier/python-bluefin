@@ -1,10 +1,7 @@
 """
 Client classes for Data Retrieval Interface API.
 """
-import socket
-import urllib
-import urllib2
-import urlparse
+import urllib.parse
 import requests
 
 from bluefin.dataretrieval.exceptions import V1ClientProcessingException, V1ClientInputException, V1ClientException
@@ -91,7 +88,7 @@ class V1Client(object):
         # known number ranges for errors are returned.
         self._check_for_error_http_status_code(response)
 
-        result_dict = urlparse.parse_qs(response.text)
+        result_dict = urllib.parse.parse_qs(response.text)
         for key, value in result_dict.items():
             # Strip away the lists from the value, since these should all just
             # be a one-member list. We'll join with commas just in case.

@@ -2,7 +2,7 @@
 Client classes for Direct Mode services.
 """
 
-import urlparse
+import urllib.parse
 import requests
 
 from bluefin.directmode.exceptions import V3ClientInputException, V3ClientProcessingException, V3ClientException, V3ClientDeclinedException
@@ -135,7 +135,7 @@ class V3Client(object):
             # known number ranges for errors are returned.
             try:
                 self._check_for_error_http_status_code(response)
-            except V3ClientException, exc:
+            except V3ClientException as exc:
                 if retries >= self.max_retries:
                     # We've exceeded the max number of retries. We don't need
                     # to see what error this is, because we can't retry any more.
@@ -154,7 +154,7 @@ class V3Client(object):
             # Nothing bad happened. Break the loop.
             break
 
-        result_dict = urlparse.parse_qs(response.text)
+        result_dict = urllib.parse.parse_qs(response.text)
         for key, value in result_dict.items():
             # Strip away the lists from the value, since these should all just
             # be a one-member list. We'll join with commas just in case.
